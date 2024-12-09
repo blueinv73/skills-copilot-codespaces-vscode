@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Membership System</title>
+  <link rel="stylesheet" href="board.css">
+</head>
+<body>
+  <header>
+    <h1>ZIMO MEMBERSHIP SYSTEM</h1>
+    <nav>
+      <ul>
+        <li><a href="file:///C:/Users/CHRISMAN%20B.%20YIADOM/Desktop/ZIMO%20SYS/Sys/members/members.html">MEMBERS</a></li>
+        <li><a href="#">DECEASED</a></li>
+        <li><a href="file:///C:/Users/CHRISMAN%20B.%20YIADOM/Desktop/ZIMO%20SYS/Sys/departments/department.html">DEPARTMENTS</a></li>
+        <li><a href="#">STUDENTS</a></li>
+        <li><a href="file:///C:/Users/CHRISMAN%20B.%20YIADOM/Desktop/ZIMO%20SYS/Sys/data/data.html">MRM</a></li>
+        <li><a href="#">CHURCH PROJECTS</a></li>
+        <li><a href="file:///C:/Users/CHRISMAN%20B.%20YIADOM/Desktop/ZIMO%20SYS/Sys/Events/events.html">UPCOMING EVENTS</a></li>
+        
+      </ul>
+    </nav>
+    
+  </header>
+  <br><br>
+  <h6>EXECUTIVE BOARD</h6>
+
+
+  <div class="member-container" id="memberContainer">
+    <!-- Members will be loaded here by JavaScript -->
+  </div>
+  <script>
+
+document.addEventListener('DOMContentLoaded', () => {
+  const members = [
+    { name: 'Member 1', image: 'file:///C:/Users/CHRISMAN%20B.%20YIADOM/Desktop/ZIMO%20SYS/imgs/utilise%20le%20code%20promo%20Yadeg226%20et%20b%C3%A9n%C3%A9ficiez%E2%80%A6.jpeg' },
+    { name: 'Member 2', image: 'file:///C:/Users/CHRISMAN%20B.%20YIADOM/Desktop/ZIMO%20SYS/imgs/utilise%20le%20code%20promo%20Yadeg226%20et%20b%C3%A9n%C3%A9ficiez%E2%80%A6.jpeg' },
+    { name: 'Member 3', image: 'file:///C:/Users/CHRISMAN%20B.%20YIADOM/Desktop/ZIMO%20SYS/imgs/utilise%20le%20code%20promo%20Yadeg226%20et%20b%C3%A9n%C3%A9ficiez%E2%80%A6.jpeg' },
+    { name: 'Member 4', image: 'file:///C:/Users/CHRISMAN%20B.%20YIADOM/Desktop/ZIMO%20SYS/imgs/utilise%20le%20code%20promo%20Yadeg226%20et%20b%C3%A9n%C3%A9ficiez%E2%80%A6.jpeg' },
+    { name: 'Member 5', image: 'file:///C:/Users/CHRISMAN%20B.%20YIADOM/Desktop/ZIMO%20SYS/imgs/utilise%20le%20code%20promo%20Yadeg226%20et%20b%C3%A9n%C3%A9ficiez%E2%80%A6.jpeg' },
+    { name: 'Member 6', image: 'file:///C:/Users/CHRISMAN%20B.%20YIADOM/Desktop/ZIMO%20SYS/imgs/utilise%20le%20code%20promo%20Yadeg226%20et%20b%C3%A9n%C3%A9ficiez%E2%80%A6.jpeg' },
+    { name: 'Member 7', image: 'file:///C:/Users/CHRISMAN%20B.%20YIADOM/Desktop/ZIMO%20SYS/imgs/utilise%20le%20code%20promo%20Yadeg226%20et%20b%C3%A9n%C3%A9ficiez%E2%80%A6.jpeg' },
+    { name: 'Member 8', image: 'file:///C:/Users/CHRISMAN%20B.%20YIADOM/Desktop/ZIMO%20SYS/imgs/utilise%20le%20code%20promo%20Yadeg226%20et%20b%C3%A9n%C3%A9ficiez%E2%80%A6.jpeg' },
+    { name: 'Member 9', image: 'file:///C:/Users/CHRISMAN%20B.%20YIADOM/Desktop/ZIMO%20SYS/imgs/utilise%20le%20code%20promo%20Yadeg226%20et%20b%C3%A9n%C3%A9ficiez%E2%80%A6.jpeg' },
+    { name: 'Member 10', image: 'file:///C:/Users/CHRISMAN%20B.%20YIADOM/Desktop/ZIMO%20SYS/imgs/utilise%20le%20code%20promo%20Yadeg226%20et%20b%C3%A9n%C3%A9ficiez%E2%80%A6.jpeg' },
+    { name: 'Member 11', image: 'file:///C:/Users/CHRISMAN%20B.%20YIADOM/Desktop/ZIMO%20SYS/imgs/utilise%20le%20code%20promo%20Yadeg226%20et%20b%C3%A9n%C3%A9ficiez%E2%80%A6.jpeg' },
+    { name: 'Member 12', image: 'file:///C:/Users/CHRISMAN%20B.%20YIADOM/Desktop/ZIMO%20SYS/imgs/utilise%20le%20code%20promo%20Yadeg226%20et%20b%C3%A9n%C3%A9ficiez%E2%80%A6.jpeg' },
+    { name: 'Member 13', image: 'file:///C:/Users/CHRISMAN%20B.%20YIADOM/Desktop/ZIMO%20SYS/imgs/utilise%20le%20code%20promo%20Yadeg226%20et%20b%C3%A9n%C3%A9ficiez%E2%80%A6.jpeg' },
+    { name: 'Member 14', image: 'file:///C:/Users/CHRISMAN%20B.%20YIADOM/Desktop/ZIMO%20SYS/imgs/utilise%20le%20code%20promo%20Yadeg226%20et%20b%C3%A9n%C3%A9ficiez%E2%80%A6.jpeg' },
+    { name: 'Member 15', image: 'file:///C:/Users/CHRISMAN%20B.%20YIADOM/Desktop/ZIMO%20SYS/imgs/utilise%20le%20code%20promo%20Yadeg226%20et%20b%C3%A9n%C3%A9ficiez%E2%80%A6.jpeg' },
+    { name: 'Member 16', image: 'file:///C:/Users/CHRISMAN%20B.%20YIADOM/Desktop/ZIMO%20SYS/imgs/utilise%20le%20code%20promo%20Yadeg226%20et%20b%C3%A9n%C3%A9ficiez%E2%80%A6.jpeg' },
+  ];
+
+  const memberContainer = document.getElementById('memberContainer');
+  members.forEach(member => {
+    const card = document.createElement('div');
+    card.classList.add('member-card');
+
+    const img = document.createElement('img');
+    img.src = member.image;
+    img.alt = member.name;
+
+    const h3 = document.createElement('h3');
+    h3.textContent = `Card ${member.name.split(' ')[1]}`;
+
+    const p = document.createElement('p');
+    p.textContent = member.name;
+
+    card.appendChild(img);
+    card.appendChild(h3);
+    card.appendChild(p);
+
+    memberContainer.appendChild(card);
+  });
+});
+
+
+// script.js
+document.addEventListener('DOMContentLoaded', () => {
+    const backButton = document.getElementById('backButton');
+
+   
+});
+
+  </script>
+</body>
+</html>

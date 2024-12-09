@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Cards</title>
+    <link rel="stylesheet" href="members.css">
+</head>
+<body>
+    <button id="backButton" class="back-button">Back</button>
+    <div class="container">
+        <h1>Create Your Profile</h1>
+        <form id="profile-form">
+            <div class="input-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" placeholder="Enter Name" required>
+            </div>
+            <div class="input-group">
+                <label for="age">Age</label>
+                <input type="number" id="age" placeholder="Enter Age" required>
+            </div>
+            <div class="input-group">
+                <label for="contact">Contact</label>
+                <input type="text" id="contact" placeholder="Enter Contact Number" required>
+            </div>
+            <div class="input-group">
+                <label for="image">Profile Image</label>
+                <input type="file" id="image" accept="image/*" required>
+            </div>
+            <button type="submit" class="btn">Add Profile</button>
+        </form>
+        
+        <h2>Profiles</h2>
+        <div class="profiles-list" id="profiles-list">
+            <!-- Profiles will be dynamically added here -->
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const form = document.getElementById('profile-form');
+        const profilesList = document.getElementById('profiles-list');
+
+        // Load profiles from localStorage
+        document.addEventListener('DOMContentLoaded', loadProfiles);
+
+        // Handle form submission to add a profile
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+            const contact = document.getElementById('contact').value;
+            const imageFile = document.getElementById('image').files[0];
+
+            if (imageFile) {
+                const reader = new FileReader();
+
+                // Validate image size (e.g., max 2MB)
+                if (imageFile.size > 2 * 1024 * 1024) {
+                    alert('File is too large. Please upload an image smaller than 2MB.');
+                    return;
+                }
+
+                // Validate image type
+                const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+                if (!validTypes.includes(imageFile.type)) {
+                    alert('Invalid image type. Only JPG, PNG, GIF, and WebP are allowed.');
+                    return;
+                }
+
+                reader.onloadend = function () {
+                    const imageUrl = reader.result;
+
+                    // Create a new profile object
+                    const profile = {
+                        id: Date.now(),
+                        name: name,
+                        age: age,
+                        contact: contact,
+                        image: imageUrl
+                    };
+
+                    // Save the profile to localStorage
+                    let profiles = JSON.parse(localStorage.getItem('profiles')) || [];
+                    profiles.push(profile);
+                    localStorage.setItem('profiles', JSON.stringify(profiles));
+
+                    // Reset the form
+                    form.reset();
+
+                    // Reload the profiles
+                    loadProfiles();
+                };
+
+                reader.readAsDataURL(imageFile);
+            } else {
+                alert('Please select an image file.');
+            }
+        });
+
+        // Load profiles from localStorage and display them
+        function loadProfiles() {
+            profilesList.innerHTML = ''; // Clear current profiles
+            const profiles = JSON.parse(localStorage.getItem('profiles')) || [];
+
+            profiles.forEach(profile => {
+                const card = document.createElement('div');
+                card.classList.add('card');
+                card.innerHTML = `
+                    <img src="${profile.image}" alt="${profile.name}">
+                    <div class="card-content">
+                        <h3>${profile.name}</h3>
+                        <p>Age: ${profile.age}</p>
+                        <p class="contact">Contact: ${profile.contact}</p>
+                        <button class="delete-btn" onclick="deleteProfile(${profile.id})">Delete</button>
+                    </div>
+                `;
+                profilesList.appendChild(card);
+            });
+        }
+
+        // Delete a profile
+        function deleteProfile(id) {
+            let profiles = JSON.parse(localStorage.getItem('profiles')) || [];
+            profiles = profiles.filter(profile => profile.id !== id);
+            localStorage.setItem('profiles', JSON.stringify(profiles));
+
+            // Reload the profiles after deletion
+            loadProfiles();
+        }
+
+         // Redirect to a specific page (e.g., homepage)
+    backButton.addEventListener('click', () => {
+        window.location.href = "homepage.html"; // Replace with your page URL
+    });
+    </script>
+
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #3e79e6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #fff;
+            text-align: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            color: #000;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .profiles-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 16px;
+        }
+
+        .card-content h3 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+
+        .card-content p {
+            margin: 8px 0;
+            color: #777;
+        }
+
+        .card-content .contact {
+            margin-top: 12px;
+            font-weight: bold;
+        }
+
+        .delete-btn {
+            background-color: #f44336;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .delete-btn:hover {
+            background-color: #e53935;
+        }
+
+
+        button {
+  padding: 10px;
+  background-color: #5cb85c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+button:hover {
+  background-color: #4cae4c;
+}
+
+
+.event-actions button {
+  padding: 5px 10px;
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.event-actions button:hover {
+  background-color: #c9302c;
+}
+
+.event-actions button:hover {
+  background-color: #c9302c;
+}
+
+/* Back Button Style */
+.back-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: #0056b3;
+}
+
+@media (max-width: 600px) {
+  .back-button {
+      top: 15px;
+      left: 15px;
+  }
+}
+    </style>
+</body>
+</html>

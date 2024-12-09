@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login System</title>
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+  <div class="login-container">
+    <h2>Login</h2>
+    <form id="loginForm" autocomplete="off">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" autofocus  required>
+      
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password"required>
+      
+      <button type="submit">Login</button>
+    </form>
+  </div>
+  
+  <!-- The Popup Menu -->
+<div id="popupMenu" class="popup-menu">
+  <div class="popup-content">
+      <span id="closePopup" class="close-btn">&times;</span>
+      <img src="file:///C:/Users/CHRISMAN%20B.%20YIADOM/Desktop/ZIMO%20SYS/imgs/Fhrixea.png" alt="Popup Image" class="popup-image">
+      <p class="popup-message">You need a correct usrneme and password to access this software</p>
+      <div class="popup-buttons">
+          <button id="okButton" class="popup-btn">OK</button>
+          <button id="cancelButton" class="popup-btn">Cancel</button>
+      </div>
+  </div>
+</div>
+
+  <script>
+
+document.getElementById('loginForm').addEventListener('submit', function(event) {
+  event.preventDefault();
+  
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+  
+  // Basic client-side validation
+  if (username === 'zimosys' && password === '123') {
+    window.location.href = "file:///C:/Users/CHRISMAN%20B.%20YIADOM/Desktop/ZIMO%20SYS/Sys/board.html" ;
+  } else {
+    alert('Invalid username or password');
+  }
+});
+
+// Show the popup after the page loads automatically
+window.onload = function() {
+    const popupMenu = document.getElementById('popupMenu');
+    popupMenu.style.display = 'flex'; // Display the popup
+};
+
+// Get references to the close button, OK button, and Cancel button
+const closePopup = document.getElementById('closePopup');
+const okButton = document.getElementById('okButton');
+const cancelButton = document.getElementById('cancelButton');
+
+// Function to close the popup
+function closePopupMenu() {
+    const popupMenu = document.getElementById('popupMenu');
+    popupMenu.style.display = 'none'; // Hide the popup
+}
+
+// Event listener for the close button (X)
+closePopup.addEventListener('click', closePopupMenu);
+
+// Event listener for the OK button
+okButton.addEventListener('click', function() {
+     // Example action for OK
+    closePopupMenu(); // Close the popup
+});
+
+// Event listener for the Cancel button
+cancelButton.addEventListener('click', function() {
+     // Example action for Cancel
+    closePopupMenu(); // Close the popup
+});
+
+// When the user clicks outside the popup content, close the popup
+window.addEventListener('click', function(event) {
+    const popupMenu = document.getElementById('popupMenu');
+    if (event.target === popupMenu) {
+        closePopupMenu();
+    }
+});
+
+  </script>
+</body>
+</html>

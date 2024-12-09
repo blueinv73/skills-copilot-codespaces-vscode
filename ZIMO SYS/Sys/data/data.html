@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Table with Persistent Data</title>
+    <link rel="stylesheet" href="data.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Member Table with Persistent Data</h2>
+
+        <!-- Form to input data -->
+        <form id="dataForm">
+            <input type="text" id="name" placeholder="Enter Name" required>
+            <input type="number" id="age" placeholder="Enter Age" required max="200">
+            <input type="text" id="location" placeholder="Enter Location" required>
+            <select id="maritalStatus" required>
+                <option value="">Select Marital Status</option>
+                <option value="Single">Single</option>
+                <option value="Married">Married</option>
+                <option value="Divorced">Divorced</option>
+                <option value="Widowed">Widowed</option>
+            </select>
+            <input type="text" id="contact" placeholder="Enter Contact Number" required>
+            <button type="submit">Add Data</button>
+        </form>
+
+        <!-- Table to display input data -->
+        <table id="dataTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Location</th>
+                    <th>Marital Status</th>
+                    <th>Contact</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data rows will be added here dynamically -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Function to load data from localStorage and render the table
+        function loadTableData() {
+            const storedData = localStorage.getItem('tableData');
+            if (storedData) {
+                const data = JSON.parse(storedData);
+                const tableBody = document.getElementById('dataTable').getElementsByTagName('tbody')[0];
+                data.forEach((rowData, index) => {
+                    const row = tableBody.insertRow();
+                    row.insertCell(0).textContent = rowData.name;
+                    row.insertCell(1).textContent = rowData.age;
+                    row.insertCell(2).textContent = rowData.location;
+                    row.insertCell(3).textContent = rowData.maritalStatus;
+                    row.insertCell(4).textContent = rowData.contact;
+
+                    const deleteCell = row.insertCell(5);
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Delete';
+                    deleteButton.classList.add('delete');
+                    deleteButton.onclick = function() {
+                        deleteRow(index);
+                    };
+                    deleteCell.appendChild(deleteButton);
+                });
+            }
+        }
+
+        // Function to save table data to localStorage
+        function saveTableData(data) {
+            localStorage.setItem('tableData', JSON.stringify(data));
+        }
+
+        // Function to add a new row to the table and save the updated data
+        document.getElementById('dataForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+            const location = document.getElementById('location').value;
+            const maritalStatus = document.getElementById('maritalStatus').value;
+            const contact = document.getElementById('contact').value;
+
+            if (name && age && location && maritalStatus && contact) {
+                const newData = { name, age, location, maritalStatus, contact };
+
+                // Get existing data from localStorage
+                const storedData = localStorage.getItem('tableData');
+                const data = storedData ? JSON.parse(storedData) : [];
+
+                // Add the new row to the data array
+                data.push(newData);
+
+                // Save the updated data back to localStorage
+                saveTableData(data);
+
+                // Reload the table
+                document.querySelector('tbody').innerHTML = '';
+                loadTableData();
+
+                // Clear form fields
+                document.getElementById('name').value = '';
+                document.getElementById('age').value = '';
+                document.getElementById('location').value = '';
+                document.getElementById('maritalStatus').value = '';
+                document.getElementById('contact').value = '';
+            } else {
+                alert('Please fill all fields.');
+            }
+        });
+
+        // Function to delete a row and update localStorage
+        function deleteRow(index) {
+            const storedData = localStorage.getItem('tableData');
+            const data = storedData ? JSON.parse(storedData) : [];
+
+            // Remove the item at the specified index
+            data.splice(index, 1);
+
+            // Save the updated data back to localStorage
+            saveTableData(data);
+
+            // Reload the table
+            document.querySelector('tbody').innerHTML = '';
+            loadTableData();
+        }
+
+        // Load initial table data when the page is loaded
+        window.onload = function() {
+            loadTableData();
+        };
+
+    </script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #096f8b;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #096f8b;
+        }
+
+        form {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        form input, form select {
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 150px;
+        }
+
+        form button {
+            padding: 10px 20px;
+            font-size: 14px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 150px;
+        }
+
+        form button:hover {
+            background-color: #45a049;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        button.delete {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        button.delete:hover {
+            background-color: #e53935;
+        }
+
+        /* Responsive design */
+        @media screen and (max-width: 600px) {
+            table {
+                font-size: 12px;
+            }
+
+            form {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            form input, form select, form button {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</body>
+</html>
